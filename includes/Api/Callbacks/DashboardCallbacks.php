@@ -10,23 +10,23 @@ namespace Inc\Api\Callbacks;
 
 use Inc\Base\BaseController;
 
+
  class DashboardCallbacks extends BaseController {
 
-    public function checkBoxSanitize( $input ) {
+    public $checkboxes = [];
 
-        $output = array();
-    
-        foreach($this->managers as $key => $value) {
-            $output[$key] = isset($input[$key]) ? true : false;
-        }
-        return $output;
+    public function dashboardSettingsSanitize( $input ) {
+
+         return $input;
+
     }
 
     public function adminSectionDashboard() {
-        echo 'Event Calendar Dashboard';
+        // echo 'Event Calendar Dashboard';
     }
 
     public function checkBoxField($args) {
+
         $chk_name = $args['label_for'];
         $classes = $args['class'];
         $passPageValue = $args['passPageValue'];
@@ -35,8 +35,19 @@ use Inc\Base\BaseController;
 
         echo '<input type="checkbox" id="'.$chk_name.'" name="'.$passPageValue.'['.$chk_name.']" 
                 value="1" class="" '. ($checked ? 'checked' : '') .'>'; 
-    
+
     }  
+
+    public function textBoxField( $args ) {
+
+        $txt_name = $args['label_for'];
+        $passPageValue = $args['passPageValue'];
+        $textboxValue = get_option($passPageValue); 
+        $value = $textboxValue[$txt_name];
+
+        echo '<input type="text" class="regular-text" id="'.$txt_name.'" name="' . $passPageValue. '[' . $txt_name .
+        ']" value="'.$value.'" placeholder="'.$args['placeholder'].'" required>';
+    }
 
 
  }  

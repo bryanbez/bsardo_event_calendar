@@ -12,7 +12,7 @@ const browser_sync = require('browser-sync').create();
 const plumber = require('gulp-plumber');
 
 const styleSRC = 'src/scss/index.scss';
-const styleASSESTS = './assets/sass/';
+const styleASSESTS = './assets/css/';
 const stylesToWatch = 'src/scss/**/*.scss';
 
 const scriptSRC = 'index.js';
@@ -21,10 +21,6 @@ const scriptASSESTS = './assets/js/';
 const scriptsToWatch = 'src/js/**/*.js';
 const scriptURL = './assets/js/';
 const scriptFiles = [scriptSRC];
-
-// const htmlSRC = './src/**/*.html';
-// const htmlURL = './assets/';
-// const htmlToWatch = './src/**/*.html';
 
 function CSSstyle(cb) {
     src([styleSRC])

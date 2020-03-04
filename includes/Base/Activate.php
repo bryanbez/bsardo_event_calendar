@@ -15,8 +15,13 @@
         $default = array();
 
         if (! get_option('bsardo_event_calendar')) {
-            update_option('bsardo_event_calendar', $default); // generate bsardo_plugin field in wp_option table in database
+            update_option('bsardo_event_calendar', $default); 
         }
+
+        if (! get_option('bsardo_add_reservation')) {
+            update_option('bsardo_add_reservation', $default); 
+        }
+
 
     }
  }

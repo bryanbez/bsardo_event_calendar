@@ -11,6 +11,8 @@ class Initialization {
          return [
             Pages\PluginDashboard::class,
             Base\Enqueue::class,
+            Base\AddReservation::class,
+            Base\PendingReservations::class,
             Api\SettingsApi::class
          ];
     }
