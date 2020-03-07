@@ -5,7 +5,7 @@
 
 namespace Inc\Api\Callbacks;
 
-class AddReservationCallbacks {
+class PendingReservationCallbacks {
 
     public function addReservationMessage() {
 
@@ -14,7 +14,7 @@ class AddReservationCallbacks {
 
     public function AddReservationSanitize( $input ) {
       
-        $output = get_option('bsardo_add_reservation');
+        $output = get_option('bsardo_reservations');
 
          if (isset($_POST['submit_reject'])) {
 
@@ -61,7 +61,7 @@ class AddReservationCallbacks {
         $disabledDate = ($args['label_for'] == 'reservation_date') ? 'readonly' : '';
 
         if(isset($_POST['edit_reservation'])) {
-    
+          
             $value = $textboxValue[$_POST['edit_reservation']][$txt_name];
         }
 

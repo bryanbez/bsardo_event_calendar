@@ -18,8 +18,8 @@
             update_option('bsardo_event_calendar', $default); 
         }
 
-        if (! get_option('bsardo_add_reservation')) {
-            update_option('bsardo_add_reservation', $default); 
+        if (! get_option('bsardo_reservations')) {
+            update_option('bsardo_reservations', $default); 
         }
 
 

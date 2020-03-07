@@ -15,7 +15,9 @@
 					
 					<?php  
 
-                    $options = get_option('bsardo_add_reservation') ?: [];
+                    $options = get_option('bsardo_reservations') ?: [];
+                    // var_dump($options);
+                    // die();
    					
    					if (count($options) === 0) {
                         echo '<br/ ><br /><h3 class=""> No Pending Reservation Requests </h3>';
@@ -39,7 +41,7 @@
                            	<td>
                            		 <form action="" method="post">
                                     <?php
-                                        settings_fields('bsardo_add_reservation_settings');
+                                        settings_fields('bsardo_reservations_settings');
                                         ?><input type="hidden" name="edit_reservation" value="<?php echo $option['reserve_id']; ?>"></input>
                                         <?php submit_button('Update Request', 'btnUpdate', 'submit_edit', false);
                                     ?>
@@ -48,7 +50,7 @@
                            	<td> 
 								 <form action="options.php" method="post">
                                     <?php
-                                        settings_fields('bsardo_add_reservation_settings');
+                                        settings_fields('bsardo_reservations_settings');
                                         ?><input type="hidden" name="reject_reservation" value="<?php echo $option['reserve_id']; ?>"></input>
                                         <?php submit_button('Reject Request', 'btnReject', 'submit_reject', false, [
                                             'onclick' => 'return confirm("Are you sure to remove this reservation ? ");'
@@ -69,8 +71,8 @@
 					
 					<form action="options.php" method="post">
 		                <?php
-		                    settings_fields('bsardo_add_reservation_settings');
-		                    do_settings_sections('bsardo_add_reservation');
+		                    settings_fields('bsardo_reservations_settings');
+		                    do_settings_sections('bsardo_reservations');
 		                    submit_button();
 		                ?>
 	            	</form>

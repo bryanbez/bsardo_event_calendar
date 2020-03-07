@@ -13,13 +13,13 @@ class AdminCallbacks extends BaseController {
         return require_once("$this->plugin_path/templates/index.php");
     }
 
-    public function addReservationPage() {
-        return require_once("$this->plugin_path/templates/addReservation.php");
+    public function manageReservations() {
+        return require_once("$this->plugin_path/templates/manageReservationsTemplate.php");
 
     }
 
-    public function pendingReservations() {
-        return require_once("$this->plugin_path/templates/manageReservationsTemplate.php");
+    public function activityCalendarPage() {
+        return require_once("$this->plugin_path/templates/activityCalendarTemplate.php");
 
     }
 
