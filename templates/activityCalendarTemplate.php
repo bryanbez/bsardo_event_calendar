@@ -17,11 +17,11 @@
 	  $month = $_POST['month'];
 	  $year = $_POST['year'];
 	  
-
 	}
 
 	$start = mktime(12, 0, 0, $month, 1, $year);
 	$firstDayArray = getdate($start);
+
 
 ?>
 
@@ -32,11 +32,10 @@
 </head>
 <body>
 
-	<!-- <h3> <a href="?page=bsardo_activity_calendar_page&ym=<?php echo $prev ?>"> &lt; </a><?php echo $html_title; ?><a href="?page=bsardo_activity_calendar_page&ym=<?php echo $next ?>"> &gt; </a> </h3>
- -->
+	<center>
+	
+	<form method="post" id="pickMonthYear" action="">
 
-	 <h1><center>Select a Month/Year</center></h1>
-	<center><form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
 	<select name="month">
 	<?php
 
@@ -56,7 +55,7 @@
 	<select name="year">
 	<?php
 
-	for ($x=2015; $x<=2035; $x++){
+	for ($x=2020; $x<=2030; $x++){
 	  echo "<option";
 	  if ($x == $year){
 	    echo " selected";
@@ -67,8 +66,9 @@
 	?>
 
 	</select>
-	<input type="submit" name="submit" value="Go" class="w3-btn w3-white w3-border w3-round">
+	<input type="submit" name="submit" value="Go" class="btnSubmit">
 	</form>
+	</center>
 
 	<?php
 
@@ -77,29 +77,27 @@
 	echo "<center><table class='activityCalendar' cellpadding='5'><tr>";
 
 	foreach ($days as $day){
-	    echo "<td><strong> ".$day." </strong></td>";
+	    echo "<th><strong> ".$day." </strong></th>";
 	}
 
 		$options = get_option("bsardo_reservations");
-		$arrayna = array();
-
-		$arrayOfDates = array(
-			[
-				'seconds' => 1,
-				'minutes' => 2,
-				'hours' => "2020-03-19"
-			],
-			[
-				'seconds' => 4,
-				'minutes' => 5,
-				'hours' => 6
-			]
-		);
+		$arrayOfEventDates = array();
 
 		foreach ($options as $value) {
-			$arrayna[] = [
+
+			if($value['time_schedule'] == 'time_am') {
+				$value['time_schedule'] = 'AM';
+			} else if($value['time_schedule'] == 'time_pm') {
+				$value['time_schedule'] = 'PM';
+			} else {
+				$value['time_schedule'] = 'Whole Day';
+			}
+
+
+			$arrayOfEventDates[] = [
 				'event_name' => "".$value['event_name']."",
-				'event_date' => "".$value['event_date'].""
+				'event_date' => "".$value['event_date']."",
+				'event_schedule_time' => "".$value['time_schedule'].""
 			];
 		}
 	
@@ -137,21 +135,47 @@
 		    else
 		    {
 
-		    	$title = "";
-		    	$title = "<br>";
+				$addClass = '';
+				$title = '';
+				$availableTime = '';
 
-		    	$getFullDate = $dayArray["year"].'-'.$dayArray["mon"].'-'.$dayArray["mday"];
+				$getFullDate = $dayArray["year"].'-'.$dayArray["mon"].'-'.$dayArray["mday"];
+				
+				$addEventBtn = '<form method="post" action="?page=bsardo_reservations_page">
+									<input type="hidden" name="eventDate" value="'.$getFullDate.'"></input>
+									<input type="submit" value="+" name="goToAddReservation" class="btnAddEvent"></input>
+								</form>';
 
-		    	for($i = 0; $i < count($arrayna); $i++) {
+		    	for($i = 0; $i < count($arrayOfEventDates); $i++) {
 
-		    		if($getFullDate == $arrayna[$i]['event_date']) {
-		    			
-		    			$title .= '<div class="event"> '.$arrayna[$i]['event_name'].' </div>';
-		    		}
+		    		if($getFullDate == $arrayOfEventDates[$i]['event_date']) {	
+						
+						$addClass .= 'eventDay'.$arrayOfEventDates[$i]['event_schedule_time'];
 
-		    	}
-		
-		        echo "<td>".$dayArray["mday"]."</a><br />".$title."</td>"; // print date
+						$title .= '<b>'.$arrayOfEventDates[$i]['event_schedule_time']. '</b> - ' .$arrayOfEventDates[$i]['event_name'];
+						
+						if ($arrayOfEventDates[$i]['event_schedule_time'] == 'Whole Day') {
+							$addEventBtn = '';
+						} else if ($arrayOfEventDates[$i]['event_schedule_time'] == 'AM') {
+							$addEventBtn = '<form method="post" action="?page=bsardo_reservations_page">
+												<input type="hidden" name="eventDate" value="'.$getFullDate.'"></input>
+												<input type="hidden" name="availTime" value="PM"></input>
+												<input type="submit" value="+" name="goToAddReservation" class="btnAddEvent"></input>
+											</form>';
+						} else if ($arrayOfEventDates[$i]['event_schedule_time'] == 'PM') {
+							$addEventBtn = '<form method="post" action="?page=bsardo_reservations_page">
+												<input type="hidden" name="eventDate" value="'.$getFullDate.'"></input>
+												<input type="hidden" name="availTime" value="AM"></input>
+												<input type="submit" value="+" name="goToAddReservation" class="btnAddEvent"></input>
+											</form>';
+						} else {
+							//
+						}
+					}
+
+				}
+				
+				echo "<td class='".$addClass."'>".$dayArray["mday"]."</a><br />".$title."<br />".$addEventBtn."</td>";
 
 		        unset($title);
 

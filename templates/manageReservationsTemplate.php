@@ -1,17 +1,37 @@
 <div class="wrap">
 
             <h3> Pending Reservations </h3>
-             <?php settings_errors(); ?>
+             <?php settings_errors(); 
+             
+             ?>
 
             <ul class="nav nav-tabs">
-		        <li class="<?php echo !isset($_POST['edit_reservation']) ? 'active' : '' ?>"> <a href="#tab-manage-reservation"> Manage Reservations</a></li>
-		        <li class="<?php echo isset($_POST['edit_reservation']) ? 'active' : '' ?>"><a href="#tab-add-update-reservation"> <?php echo isset($_POST['edit_reservation']) ? 'Update Reservation' : 'Add Reservation' ?> </a></li>
+		        <li class="<?php 
+                        if (isset($_POST['edit_reservation']) || isset($_POST['goToAddReservation'])) {
+                            echo '';
+                        } else {
+                            echo 'active';
+                        }
+                    ?>"> <a href="#tab-manage-reservation"> Manage Reservations</a></li>
+		        <li class="<?php 
+                        if (isset($_POST['edit_reservation']) || isset($_POST['goToAddReservation'])) {
+                            echo 'active';
+                        } else {
+                            echo '';
+                        }
+                    ?>"><a href="#tab-add-update-reservation"> <?php echo isset($_POST['edit_reservation']) ? 'Update Reservation' : 'Add Reservation' ?> </a></li>
 		 
-		    </ul>
+            </ul>
 
 		    <div class="tab-content">
 
-			   	<div id="tab-manage-reservation" class="tab-pane <?php echo !isset($_POST['edit_reservation']) ? 'active' : '' ?>">
+			   	<div id="tab-manage-reservation" class="tab-pane <?php 
+                        if (isset($_POST['edit_reservation']) || isset($_POST['goToAddReservation'])) {
+                            echo '';
+                        } else {
+                            echo 'active';
+                        }
+                    ?>">
 					
 					<?php  
 
@@ -67,7 +87,13 @@
 	             
 	            </div>
 
-	            <div id="tab-add-update-reservation" class="tab-pane <?php echo isset($_POST['edit_reservation']) ? 'active' : '' ?>">
+                <div id="tab-add-update-reservation" class="tab-pane <?php 
+                        if (isset($_POST['edit_reservation']) || isset($_POST['goToAddReservation'])) {
+                            echo 'active';
+                        } else {
+                            echo '';
+                        }
+                    ?>">
 					
 					<form action="options.php" method="post">
 		                <?php

@@ -1,0 +1,13 @@
+.btnAddEvent {
+    float: right;
+    background-color: transparent;
+    font-weight: bold;
+    border-radius: 75em;
+    border: 1px solid;
+
+
+    &:hover {
+        background-color: rgba(56, 9, 56, 0.2);
+        color: #ffffff;
+    }
+}

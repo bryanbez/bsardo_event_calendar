@@ -98,8 +98,13 @@ class PendingReservationCallbacks {
             $value = $textboxValue[$_POST['edit_reservation']][$txt_name];
         }
 
-        echo '<input type="date" class="regular-text" id="'.$txt_name.'" name="' . $passPageValue. '[' . $txt_name .
-        ']" value="'.$value.'" required>';
+        if (isset($_POST['eventDate'])) {
+            echo '<input type="date" class="regular-text" id="'.$txt_name.'" name="' . $passPageValue. '[' . $txt_name .
+            ']" value="'.$_POST['eventDate'].'" readonly>';
+        } else {
+            echo '<input type="date" class="regular-text" id="'.$txt_name.'" name="' . $passPageValue. '[' . $txt_name .
+            ']" value="'.$value.'" required>';
+        }
 
     }
 
@@ -126,17 +131,39 @@ class PendingReservationCallbacks {
         $radio_name = $args['label_for'];
         $passPageValue = $args['passPageValue'];
         $checked = false;
-        
-         foreach ($args['radioButtonLists'] as $lists) {
 
-                $radio_box = get_option($passPageValue);
-                if(isset($_POST['edit_reservation'])) {
-                    $checked = ($radio_box[$_POST['edit_reservation']][$radio_name] == $lists['id']) ? 'checked' : ''; 
+        foreach ($args['radioButtonLists'] as $lists) {
+
+            $radio_box = get_option($passPageValue);
+
+            if(isset($_POST['edit_reservation'])) {
+                $checked = ($radio_box[$_POST['edit_reservation']][$radio_name] == $lists['id']) ? 'checked' : ''; 
+            }
+
+            if (isset($_POST['availTime'])) {
+
+                if ($_POST['availTime'] == 'AM') {
+                    echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
+                    value="time_am" class="" checked="checked"><label> AM </label><br /><br />'; 
+                    break;
+                } 
+        
+                if ($_POST['availTime'] == 'PM') {
+                    echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
+                    value="time_pm" class="" checked="checked"> <label> PM </label><br /><br />'; 
+                    break;
                 }
 
-                echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
-                    value="'.$lists['id'].'" class="" '. ($checked ? 'checked' : '') .'><label>'. $lists['title'] .'</label><br /><br />'; 
-         } 
+            }
+
+            echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
+            value="'.$lists['id'].'" class="" '. ($checked ? 'checked' : '') .'><label>'. $lists['title'] .'</label><br /><br />'; 
+    
+        } 
+        
+  
+        
+       
     }
 
 
