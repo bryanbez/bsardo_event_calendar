@@ -22,6 +22,14 @@
             update_option('bsardo_reservations', $default); 
         }
 
+        if (! get_option('bsardo_done_reservations_archive')) {
+            update_option('bsardo_done_reservations_archive', $default); 
+        }
+
+        if (! get_option('bsardo_reject_reservations_archive')) {
+            update_option('bsardo_reject_reservations_archive', $default); 
+        }
+
 
     }
  }

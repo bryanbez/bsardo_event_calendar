@@ -80,7 +80,8 @@
 	    echo "<th><strong> ".$day." </strong></th>";
 	}
 
-		$options = get_option("bsardo_reservations");
+		$options = get_option("bsardo_reservations"); // get the field that stores the reservations.
+
 		$arrayOfEventDates = array();
 
 		foreach ($options as $value) {
@@ -141,20 +142,24 @@
 
 				$getFullDate = $dayArray["year"].'-'.$dayArray["mon"].'-'.$dayArray["mday"];
 				
-				$addEventBtn = '<form method="post" action="?page=bsardo_reservations_page">
+				$addEventBtn = '<form method="post" action="?page=bsardo_reservations_page"> 
 									<input type="hidden" name="eventDate" value="'.$getFullDate.'"></input>
 									<input type="submit" value="+" name="goToAddReservation" class="btnAddEvent"></input>
-								</form>';
+								</form>'; // button add event template
+
+				$countEventPerDay = [];
 
 		    	for($i = 0; $i < count($arrayOfEventDates); $i++) {
 
-		    		if($getFullDate == $arrayOfEventDates[$i]['event_date']) {	
+		    		if($getFullDate == $arrayOfEventDates[$i]['event_date']) {	// Same date of event. Check if am and pm events are not available.
+
+						$countEventPerDay[] = $arrayOfEventDates[$i]['event_schedule_time'];
 						
 						$addClass .= 'eventDay'.$arrayOfEventDates[$i]['event_schedule_time'];
 
-						$title .= '<b>'.$arrayOfEventDates[$i]['event_schedule_time']. '</b> - ' .$arrayOfEventDates[$i]['event_name'];
+						$title .= '<b>'.$arrayOfEventDates[$i]['event_schedule_time']. '</b> - ' .$arrayOfEventDates[$i]['event_name'].'<br />';
 						
-						if ($arrayOfEventDates[$i]['event_schedule_time'] == 'Whole Day') {
+						if ($arrayOfEventDates[$i]['event_schedule_time'] == 'Whole Day') { // if event is whole day
 							$addEventBtn = '';
 						} else if ($arrayOfEventDates[$i]['event_schedule_time'] == 'AM') {
 							$addEventBtn = '<form method="post" action="?page=bsardo_reservations_page">
@@ -168,14 +173,19 @@
 												<input type="hidden" name="availTime" value="AM"></input>
 												<input type="submit" value="+" name="goToAddReservation" class="btnAddEvent"></input>
 											</form>';
-						} else {
+						} else  {
 							//
 						}
 					}
 
 				}
 				
-				echo "<td class='".$addClass."'>".$dayArray["mday"]."</a><br />".$title."<br />".$addEventBtn."</td>";
+				if (count($countEventPerDay) == 2) { // styling the date has a 2 events (am and pm)
+					$addEventBtn = '';
+					$addClass = 'fullSlot';
+				}
+
+				echo "<td class='".$addClass."'>".$dayArray["mday"]."</a><br />". $title ."<br />".  $addEventBtn."</td>";
 
 		        unset($title);
 
@@ -189,25 +199,5 @@
 	?>
 
 
-
-	<!-- <table class="activityCalendar">
-		<tr>
-			<th> Sunday </th>
-			<th> Monday </th>
-			<th> Tuesday </th>
-			<th> Wednsday</th>
-			<th> Thursday </th>
-			<th> Friday </th>
-			<th> Saturday</th>
-		</tr>
-		<?php
-
-			foreach ($weeks as $week) {
-
-				echo $week;
-			}
-		?>
-	</table>
- -->
 </body>
 </html>

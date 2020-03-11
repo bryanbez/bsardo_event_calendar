@@ -24,7 +24,7 @@ use \Inc\Api\Callbacks\PendingReservationCallbacks;
             $this->settings = new SettingsApi(); 
             $this->callbacks = new AdminCallbacks();
             $this->pending_reservation_callbacks = new PendingReservationCallbacks();
-          
+            $this->passToDoneEventsArchive();
             $this->setSubPages();
             $this->setSettings();
             $this->setSections();
@@ -33,6 +33,44 @@ use \Inc\Api\Callbacks\PendingReservationCallbacks;
             $this->settings->addSubPages($this->subpages)->register();
           
         }
+
+        public function passToDoneEventsArchive() { // pass the past event info into done event archive table field 
+
+            $output = get_option('bsardo_reservations');
+
+            $getDoneEventFields = [];
+   
+            $currDay = getdate()['year'].'-'.$this->addZeroInSingleDigitDaysInCurrDay(getdate()['mon']).'-'.getdate()['mday'];
+   
+            foreach($output as $key => $value) {
+
+                if ($currDay > $value['event_date']) {
+
+                    $getDoneEventFields[$key] = $value;
+                    unset($output[$key]);
+            
+                }
+
+            }
+
+            if (count($getDoneEventFields) != 0) {
+                update_option('bsardo_done_reservations_archive', $getDoneEventFields);
+            }   
+            
+            update_option('bsardo_reservations', $output);
+            
+         }
+   
+         public function addZeroInSingleDigitDaysInCurrDay($month) {
+   
+            if ($month < 10) {
+                return '0'.$month;
+            }
+            else {
+                return $month;
+            }
+   
+         }
 
         public function setSettings() {
     

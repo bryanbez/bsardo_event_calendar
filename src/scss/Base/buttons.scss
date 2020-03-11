@@ -4,10 +4,11 @@
     font-weight: bold;
     border-radius: 75em;
     border: 1px solid;
-
+    cursor: pointer;
 
     &:hover {
-        background-color: rgba(56, 9, 56, 0.2);
-        color: #ffffff;
+        
+        border: 1px solid;
+
     }
 }

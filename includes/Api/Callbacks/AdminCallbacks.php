@@ -18,8 +18,13 @@ class AdminCallbacks extends BaseController {
 
     }
 
+    // public function activityCalendarPage() {
+    //     return require_once("$this->plugin_path/templates/activityCalendarTemplate.php");
+
+    // }
+
     public function activityCalendarPage() {
-        return require_once("$this->plugin_path/templates/activityCalendarTemplate.php");
+        return require_once("$this->plugin_path/templates/calendarTemplate.php");
 
     }
 
