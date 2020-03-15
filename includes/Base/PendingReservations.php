@@ -41,7 +41,11 @@ use \Inc\Api\Callbacks\PendingReservationCallbacks;
             $getDoneEventFields = [];
    
             $currDay = getdate()['year'].'-'.$this->addZeroInSingleDigitDaysInCurrDay(getdate()['mon']).'-'.getdate()['mday'];
-   
+            
+            // echo '<pre>';
+            // var_dump($currDay);
+            // die();
+
             foreach($output as $key => $value) {
 
                 if ($currDay > $value['event_date']) {
@@ -60,8 +64,8 @@ use \Inc\Api\Callbacks\PendingReservationCallbacks;
             update_option('bsardo_reservations', $output);
             
          }
-   
-         public function addZeroInSingleDigitDaysInCurrDay($month) {
+
+        public function addZeroInSingleDigitDaysInCurrDay($month) {
    
             if ($month < 10) {
                 return '0'.$month;
@@ -310,6 +314,34 @@ use \Inc\Api\Callbacks\PendingReservationCallbacks;
                     'args' => [
                         'passPageValue' => 'bsardo_reservations',
                         'label_for' => 'reserve_id',
+                    ]
+                ],
+                [
+                    'id' => 'event_status',
+                    'title' => 'Event Status',
+                    'callback' => [
+                        $this->pending_reservation_callbacks,
+                        'radioButtonField'
+                    ],
+                    'page' => 'bsardo_reservations', 
+                    'section' => 'bsardo_reservations_index',
+                    'args' => [
+                        'passPageValue' => 'bsardo_reservations',
+                        'label_for' => 'event_status',
+                        'radioButtonLists' => [
+                            [
+                                'id' => 'event_pending',
+                                'title' => 'Pending',
+                            ],
+                            [
+                                'id' => 'event_approved',
+                                'title' => 'Approved',
+                            ],
+                            [
+                                'id' => 'event_rejected',
+                                'title' => 'Rejected',
+                            ]
+                        ]
                     ]
                 ],
  

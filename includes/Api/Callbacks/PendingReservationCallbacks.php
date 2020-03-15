@@ -15,12 +15,7 @@ class PendingReservationCallbacks {
     public function AddReservationSanitize( $input ) {
       
         $output = get_option('bsardo_reservations');
-
-         if (isset($_POST['submit_reject'])) {
-
-            unset($output[$_POST['reject_reservation']]); // remove reservation
-            return $output;
-        }
+      
 
         if (count($output) == 0) {
             $output[$input['reserve_id']] = $input; // using reserve_id as an id for fetching data.
@@ -33,15 +28,14 @@ class PendingReservationCallbacks {
 
                 $output[$key] = $input; // Update Existing Record
               
-        
             } else {
                 $output[$input['reserve_id']] = $input; // Add Record
             }
         }
  
         return $output;
-
     }
+
 
     public function reserveIDTextBoxField($args) {
 
@@ -143,51 +137,63 @@ class PendingReservationCallbacks {
 
                 $checked = ($radio_box[$_POST['edit_reservation']][$radio_name] == $lists['id']) ? 'checked' : '';
 
-                $output = get_option('bsardo_reservations');
-                $getEventDateToEdit = $_POST['edit_reservation_event_date'];
-                $gettimeSchedule = $_POST['edit_reservation_time_schedule'];
+                if ($radio_name == 'time_schedule') {
 
-                $scheduleCountPerDay = [];
+                    $output = get_option('bsardo_reservations');
+                    $getEventDateToEdit = $_POST['edit_reservation_event_date'];
+                    $gettimeSchedule = $_POST['edit_reservation_time_schedule'];
 
-                foreach($output as $listOfEvents) {
+                    $scheduleCountPerDay = [];
 
-                    if ($listOfEvents['event_date'] == $getEventDateToEdit) {
-                        $scheduleCountPerDay[] = $listOfEvents['time_schedule'];
+                    foreach($output as $listOfEvents) {
+
+                        if ($listOfEvents['event_date'] == $getEventDateToEdit) {
+                            $scheduleCountPerDay[] = $listOfEvents['time_schedule'];
+                        }
+
+                    }
+                
+                    if (count($scheduleCountPerDay) == 2) {
+                        echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
+                        value="'.$gettimeSchedule.'" class="" checked="checked"><label> '.($gettimeSchedule == "time_am" ? "AM" : "PM") .'</label><br />'; 
+                        break;
                     }
 
-                }
-
-                if (count($scheduleCountPerDay) == 2) {
-                    echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
-                    value="'.$gettimeSchedule.'" class="" checked="checked"><label> '.($gettimeSchedule == "time_am" ? "AM" : "PM") .'</label><br />'; 
-                    break;
-                }
-
-            }
-
-            if (isset($_POST['availTime'])) {
-
-                if ($_POST['availTime'] == 'AM') {
-                    echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
-                    value="time_am" class="" checked="checked"><label> AM </label><br /><br />'; 
-                    break;
                 } 
-        
-                if ($_POST['availTime'] == 'PM') {
-                    echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
-                    value="time_pm" class="" checked="checked"> <label> PM </label><br /><br />'; 
-                    break;
-                }
+
+              
 
             }
+
+            // if (isset($_POST['availTime'])) {
+
+            //     if ($_POST['availTime'] == 'AM') {
+
+            //         if ($radio_name == 'time_schedule') {
+            //             echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
+            //             value="time_am" class="" checked="checked"><label> AM </label><br /><br />'; 
+            //             break;
+            
+            //     } 
+        
+            //     if ($_POST['availTime'] == 'PM') {
+
+            //         if ($radio_name == 'time_schedule') {
+            //             echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
+            //             value="time_pm" class="" checked="checked"> <label> PM </label><br /><br />'; 
+            //             break;
+            //         }
+            //     }
+
+            // }
 
             echo '<input type="radio" id="'.$radio_name.'" name="'.$passPageValue.'['.$radio_name.']" 
             value="'.$lists['id'].'" class="" '. ($checked ? 'checked' : '') .'><label>'. $lists['title'] .'</label><br /><br />'; 
     
-        } 
+            // } 
         
   
-        
+        }
        
     }
 

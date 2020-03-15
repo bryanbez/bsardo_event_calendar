@@ -61,20 +61,24 @@
 
             foreach ($options as $value) {
 
-                if($value['time_schedule'] == 'time_am') {
-                    $value['time_schedule'] = 'AM';
-                } else if($value['time_schedule'] == 'time_pm') {
-                    $value['time_schedule'] = 'PM';
-                } else {
-                    $value['time_schedule'] = 'Whole Day';
+                if ($value['event_status'] == 'event_approved') {
+
+                    if($value['time_schedule'] == 'time_am') {
+                        $value['time_schedule'] = 'AM';
+                    } else if($value['time_schedule'] == 'time_pm') {
+                        $value['time_schedule'] = 'PM';
+                    } else {
+                        $value['time_schedule'] = 'Whole Day';
+                    }
+    
+    
+                    $this->arrayOfEventDates[] = [
+                        'event_name' => "".$value['event_name']."",
+                        'event_date' => "".$value['event_date']."",
+                        'event_schedule_time' => "".$value['time_schedule'].""
+                    ];
+                    
                 }
-
-
-                $this->arrayOfEventDates[] = [
-                    'event_name' => "".$value['event_name']."",
-                    'event_date' => "".$value['event_date']."",
-                    'event_schedule_time' => "".$value['time_schedule'].""
-                ];
             }
 
             $this->sanitizeDates();
@@ -183,7 +187,13 @@
 
             $this->addEventBtn = '<br />';
 
-        } else {
+        }
+        else if ($getFullDate == $this->currDay) {
+
+            $this->addEventBtn = '<br />';
+
+        }
+        else {
 
             $this->addEventBtn = '<form method="post" action="?page=bsardo_reservations_page"> 
                 <input type="hidden" name="eventDate" value="'.$this->getFullDate.'"></input>
